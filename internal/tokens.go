@@ -39,10 +39,9 @@ func SaveToken(key string, value string) {
 }
 
 func replaceKey(key string) string {
-	key, value, _ := strings.Cut(key, ":")
-	switch key {
+	switch k, v, _ := strings.Cut(key, ":"); k {
 	case AccMiFitness, AccXiaomiHome:
-		return AccXiaomi + ":" + value
+		return AccXiaomi + ":" + v
 	}
 	return key
 }
