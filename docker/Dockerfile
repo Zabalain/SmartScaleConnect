@@ -24,7 +24,7 @@ RUN --mount=type=cache,target=/root/.cache/go-build CGO_ENABLED=0 go build -ldfl
 # 2. Final image
 FROM alpine AS base
 
-RUN apk add --no-cache tini jq
+RUN apk add --no-cache tini jq tzdata
 
 COPY docker/run.sh /
 RUN chmod a+x /run.sh
