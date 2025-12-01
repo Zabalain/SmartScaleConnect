@@ -2,6 +2,7 @@ package internal
 
 import (
 	"errors"
+	"time"
 
 	"github.com/AlexxIT/SmartScaleConnect/pkg/core"
 	"github.com/AlexxIT/SmartScaleConnect/pkg/garmin"
@@ -21,9 +22,16 @@ const (
 	AccZeppXiaomi = "zepp/xiaomi"
 )
 
-var accounts = map[string]core.Account{}
+var accounts map[string]core.Account
+var cacheTS time.Time
 
 func GetAccount(fields []string) (core.Account, error) {
+	// Clean accounts every 23 hours, because there is no logic for token expiration.
+	if now := time.Now(); now.After(cacheTS) {
+		accounts = map[string]core.Account{}
+		cacheTS = now.Add(23 * time.Hour)
+	}
+
 	key := fields[0] + ":" + fields[1]
 	if account, ok := accounts[key]; ok {
 		return account, nil
