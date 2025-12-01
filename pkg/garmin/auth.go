@@ -59,7 +59,10 @@ func (c *Client) getTicket(username, password string) (string, error) {
 	csrf := core.Between(string(body), `name="_csrf" value="`, `"`)
 
 	// 3. Signin
-	data := fmt.Sprintf("username=%s&password=%s&embed=true&_csrf=%s", username, password, csrf)
+	data := fmt.Sprintf(
+		"username=%s&password=%s&embed=true&_csrf=%s",
+		url.QueryEscape(username), url.QueryEscape(password), csrf,
+	)
 
 	req, err := http.NewRequest("POST", url2, strings.NewReader(data))
 	if err != nil {
@@ -82,6 +85,9 @@ func (c *Client) getTicket(username, password string) (string, error) {
 
 	ticket := core.Between(string(body), `embed?ticket=`, `"`)
 	if ticket == "" {
+		if msg := core.Between(string(body), `class="error">`, `<`); msg != "" {
+			return "", errors.New("garmin: " + msg)
+		}
 		return "", errors.New("garmin: can't find ticket")
 	}
 
