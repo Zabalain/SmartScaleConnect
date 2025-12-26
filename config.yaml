@@ -1,3 +1,3 @@
-sync_mi_s400:
-  from: xiaomihome ${{ secrets.XIAOMI_USER }} ${{ secrets.XIAOMI_PASS }} de yunmai.scales.ms104
-  to: garmin ${{ secrets.GARMIN_USER }} ${{ secrets.GARMIN_PASS }}
+sync_s400:
+  from: xiaomihome $XIAOMI_USER $XIAOMI_PASS de yunmai.scales.ms104
+  to: garmin $GARMIN_USER $GARMIN_PASS
