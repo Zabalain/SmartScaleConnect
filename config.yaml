@@ -1,9 +1,3 @@
-sync:
-  - from: xiaomihome
-    username: 'pzabalain@yahoo.es'
-    password: '1001Motor$xia'
-    region: de
-    model: yunmai.scales.ms104
-  - to: garmin
-    username: 'pzabalain@yahoo.es'
-    password: '1001Motor$gar'
+sync_s400:
+  from: xiaomihome 'pzabalain@yahoo.es' '1001Motor$xia' de yunmai.scales.ms104
+  to: garmin 'pzabalain@yahoo.es' '1001Motor$gar'
