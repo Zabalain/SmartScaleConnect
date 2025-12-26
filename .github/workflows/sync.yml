@@ -17,13 +17,5 @@ jobs:
         with: { go-version: '1.24' }
 
       - name: Run Sync
-        env:
-          # Aquí cargamos tus Secrets como variables de entorno
-          XIAOMI_USER: ${{ secrets.XIAOMI_USER }}
-          XIAOMI_PASS: ${{ secrets.XIAOMI_PASS }}
-          GARMIN_USER: ${{ secrets.GARMIN_USER }}
-          GARMIN_PASS: ${{ secrets.GARMIN_PASS }}
         run: |
-          # El programa scaleconnect detecta automáticamente las 
-          # variables $ que pusimos en el config.yaml
           go run main.go --config config.yaml
