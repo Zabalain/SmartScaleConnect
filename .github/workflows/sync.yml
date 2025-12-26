@@ -2,8 +2,8 @@ name: Sync Xiaomi S400 to Garmin
 
 on:
   schedule:
-    - cron: '0 */6 * * *' # Se ejecuta cada 6 horas
-  workflow_dispatch:      # Permite ejecutarlo a mano cuando quieras
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
 
 jobs:
   sync:
@@ -18,16 +18,12 @@ jobs:
 
       - name: Run Sync
         env:
+          # Aquí cargamos tus Secrets como variables de entorno
           XIAOMI_USER: ${{ secrets.XIAOMI_USER }}
           XIAOMI_PASS: ${{ secrets.XIAOMI_PASS }}
           GARMIN_USER: ${{ secrets.GARMIN_USER }}
           GARMIN_PASS: ${{ secrets.GARMIN_PASS }}
         run: |
-          # Esto inserta tus secretos reales en el archivo config.yaml
-          sed -i "s/\${{ secrets.XIAOMI_USER }}/$XIAOMI_USER/g" config.yaml
-          sed -i "s/\${{ secrets.XIAOMI_PASS }}/$XIAOMI_PASS/g" config.yaml
-          sed -i "s/\${{ secrets.GARMIN_USER }}/$GARMIN_USER/g" config.yaml
-          sed -i "s/\${{ secrets.GARMIN_PASS }}/$GARMIN_PASS/g" config.yaml
-          
-          # Ejecuta el programa usando el archivo de configuración
+          # El programa scaleconnect detecta automáticamente las 
+          # variables $ que pusimos en el config.yaml
           go run main.go --config config.yaml
