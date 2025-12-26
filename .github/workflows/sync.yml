@@ -18,17 +18,16 @@ jobs:
 
       - name: Run Sync
         env:
-          # Estos son los datos de tu báscula que me pasaste
           XIAOMI_USER: ${{ secrets.XIAOMI_USER }}
           XIAOMI_PASS: ${{ secrets.XIAOMI_PASS }}
           GARMIN_USER: ${{ secrets.GARMIN_USER }}
           GARMIN_PASS: ${{ secrets.GARMIN_PASS }}
         run: |
-          go run main.go \
-          --xiaomi-user "$XIAOMI_USER" \
-          --xiaomi-pass "$XIAOMI_PASS" \
-          --garmin-user "$GARMIN_USER" \
-          --garmin-pass "$GARMIN_PASS" \
-          --xiaomi-mac "E8:4A:54:46:13:C8" \
-          --xiaomi-key "75472a85ebdc2cb56ac9ff413845f7aa" \
-          --region de
+          # Esto inserta tus secretos reales en el archivo config.yaml
+          sed -i "s/\${{ secrets.XIAOMI_USER }}/$XIAOMI_USER/g" config.yaml
+          sed -i "s/\${{ secrets.XIAOMI_PASS }}/$XIAOMI_PASS/g" config.yaml
+          sed -i "s/\${{ secrets.GARMIN_USER }}/$GARMIN_USER/g" config.yaml
+          sed -i "s/\${{ secrets.GARMIN_PASS }}/$GARMIN_PASS/g" config.yaml
+          
+          # Ejecuta el programa usando el archivo de configuración
+          go run main.go --config config.yaml
