@@ -1,0 +1,34 @@
+name: Sync Xiaomi S400 to Garmin
+
+on:
+  schedule:
+    - cron: '0 */6 * * *' # Se ejecuta cada 6 horas
+  workflow_dispatch:      # Permite ejecutarlo a mano cuando quieras
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with: { go-version: '1.24' }
+
+      - name: Run Sync
+        env:
+          # Estos son los datos de tu báscula que me pasaste
+          XIAOMI_USER: ${{ secrets.XIAOMI_USER }}
+          XIAOMI_PASS: ${{ secrets.XIAOMI_PASS }}
+          GARMIN_USER: ${{ secrets.GARMIN_USER }}
+          GARMIN_PASS: ${{ secrets.GARMIN_PASS }}
+        run: |
+          go run main.go \
+          --xiaomi-user "$XIAOMI_USER" \
+          --xiaomi-pass "$XIAOMI_PASS" \
+          --garmin-user "$GARMIN_USER" \
+          --garmin-pass "$GARMIN_PASS" \
+          --xiaomi-mac "E8:4A:54:46:13:C8" \
+          --xiaomi-key "75472a85ebdc2cb56ac9ff413845f7aa" \
+          --region de
