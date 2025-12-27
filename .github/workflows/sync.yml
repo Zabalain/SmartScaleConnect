@@ -1,21 +1,25 @@
-name: Sync Xiaomi S400 to Garmin
+name: SmartScale Sync (S400 to Garmin)
 
 on:
   schedule:
-    - cron: '0 */2 * * *'
-  workflow_dispatch:
+    # Se ejecuta automáticamente todos los días a las 07:00 AM UTC
+    - cron: '0 7 * * *'
+  workflow_dispatch: # Permite ejecución manual desde la pestaña 'Actions' en GitHub
 
 jobs:
-  sync:
+  sincronizar:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Descargar codigo del repo
         uses: actions/checkout@v4
 
-      - name: Setup Go
-        uses: actions/setup-go@v5
-        with: { go-version: '1.24' }
-
-      - name: Run Sync
-        run: |
-          go run main.go --config config.yaml
+      - name: Ejecutar SmartScaleConnect
+        uses: docker://alexxit/smartscaleconnect
+        env:
+          # Estos nombres deben coincidir con los "Secrets" que configures en GitHub
+          XIAOMI_USER: ${{ secrets.XIAOMI_USER }}
+          XIAOMI_PASS: ${{ secrets.XIAOMI_PASS }}
+          GARMIN_USER: ${{ secrets.GARMIN_USER }}
+          GARMIN_PASS: ${{ secrets.GARMIN_PASS }}
+        with:
+          args: -c scaleconnect.yaml
