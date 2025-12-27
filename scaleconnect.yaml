@@ -1,0 +1,12 @@
+sync_s400_to_garmin:
+  # Origen: Xiaomi Home (S400)
+  # Usamos variables de entorno para no subir contraseñas al repo
+  from: xiaomihome ${XIAOMI_USER} ${XIAOMI_PASS} ${XIAOMI_REGION} yunmai.scales.ms104
+  
+  # Destino: Garmin Connect
+  to: garmin ${GARMIN_USER} ${GARMIN_PASS}
+  
+  # Opcional: Ajustes de datos
+  expr:
+    # Garmin usa SkeletalMuscleMass, si la S400 envía MuscleMass, lo mapeamos:
+    SkeletalMuscleMass: 'MuscleMass'
